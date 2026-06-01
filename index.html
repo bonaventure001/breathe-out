@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breathe-Out — Your Calm Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #7A9E87;
+    --sage-light: #EEF4F0;
+    --sage-mid: #C4D9CB;
+    --cream: #FAFAF7;
+    --warm-white: #FFFFFF;
+    --ink: #1C2320;
+    --ink-mid: #4A5550;
+    --ink-light: #8A9690;
+    --accent: #4E7A62;
+    --accent-soft: #D6E8DC;
+    --warn-soft: #FDF3E7;
+    --warn: #C4872A;
+    --border: rgba(122,158,135,0.18);
+    --shadow: 0 2px 24px rgba(28,35,32,0.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── LANDING SCREEN ── */
+  #landing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+    padding: 2rem;
+    text-align: center;
+    gap: 0;
+    animation: fadeIn 0.8s ease;
+  }
+  .logo-mark {
+    width: 64px; height: 64px;
+    background: var(--sage);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+  }
+  .logo-mark svg { width: 32px; height: 32px; }
+  #landing h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+  #landing h1 em { font-style: italic; color: var(--accent); }
+  #landing p {
+    font-size: 1rem;
+    color: var(--ink-mid);
+    font-weight: 300;
+    max-width: 360px;
+    line-height: 1.65;
+    margin-bottom: 2.5rem;
+  }
+  .start-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 20px rgba(78,122,98,0.3);
+    letter-spacing: 0.01em;
+  }
+  .start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(78,122,98,0.4); }
+  .landing-note {
+    margin-top: 1.5rem;
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    letter-spacing: 0.02em;
+  }
+  .pillars {
+    display: flex; gap: 1rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .pillar {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    color: var(--ink-mid);
+    font-weight: 400;
+  }
+
+  /* ── APP SCREEN ── */
+  #app { display: none; flex-direction: column; height: 100dvh; }
+
+  header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--warm-white);
+    flex-shrink: 0;
+  }
+  .h-logo {
+    width: 34px; height: 34px;
+    background: var(--sage);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .h-logo svg { width: 18px; height: 18px; }
+  .h-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink); }
+  .h-sub { font-size: 0.72rem; color: var(--ink-light); font-weight: 300; }
+  .h-pulse {
+    margin-left: auto;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--sage); flex-shrink: 0;
+    animation: pulse 2.5s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* check-in strip */
+  .checkin {
+    padding: 0.65rem 1.25rem;
+    background: var(--sage-light);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .checkin-label { font-size: 0.7rem; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .moods { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+  .mood {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.32rem 0.85rem;
+    font-size: 0.78rem;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .mood:hover { border-color: var(--sage); background: var(--sage-light); }
+  .mood.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  /* messages */
+  .messages {
+    flex: 1; overflow-y: auto;
+    padding: 1.25rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    scroll-behavior: smooth;
+  }
+  .messages::-webkit-scrollbar { width: 4px; }
+  .messages::-webkit-scrollbar-thumb { background: var(--sage-mid); border-radius: 4px; }
+
+  .msg { display: flex; gap: 8px; align-items: flex-end; animation: slideUp 0.3s ease; }
+  .msg.user { flex-direction: row-reverse; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .msg-av {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 0.7rem; font-weight: 500;
+  }
+  .msg.bot .msg-av { background: var(--sage); }
+  .msg.bot .msg-av svg { width: 14px; height: 14px; }
+  .msg.user .msg-av { background: var(--ink-light); color: white; font-size: 0.65rem; }
+
+  .bubble {
+    max-width: min(76%, 420px);
+    padding: 0.78rem 1rem;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .msg.bot .bubble {
+    background: var(--warm-white);
+    color: var(--ink);
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .msg.user .bubble {
+    background: var(--accent);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  .insight {
+    background: var(--warn-soft);
+    border-left: 2px solid var(--warn);
+    border-radius: 0 10px 10px 0;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.78rem;
+    color: var(--warn);
+    margin-top: 0.3rem;
+    line-height: 1.5;
+    max-width: min(76%, 420px);
+    margin-left: 38px;
+  }
+
+  /* typing */
+  .typing-wrap { display: flex; gap: 8px; align-items: flex-end; }
+  .typing-bubble {
+    background: var(--warm-white); border: 1px solid var(--border);
+    border-radius: 16px; border-bottom-left-radius: 4px;
+    padding: 0.85rem 1.1rem;
+    display: flex; gap: 5px; align-items: center;
+    box-shadow: var(--shadow);
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sage-mid); animation: blink 1.2s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0.3} 40%{opacity:1} }
+
+  /* quick replies */
+  .qr-area {
+    padding: 0.5rem 1.25rem 0.5rem;
+    display: flex; flex-wrap: wrap; gap: 0.45rem;
+    flex-shrink: 0;
+  }
+  .qr {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.42rem 1rem;
+    font-size: 0.8rem;
+    color: var(--ink-mid);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .qr:hover { border-color: var(--sage); color: var(--accent); background: var(--sage-light); }
+
+  /* input */
+  .input-bar {
+    padding: 0.75rem 1.25rem 1rem;
+    display: flex; gap: 0.6rem; align-items: flex-end;
+    border-top: 1px solid var(--border);
+    background: var(--warm-white);
+    flex-shrink: 0;
+  }
+  textarea {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0.72rem 1rem;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    resize: none;
+    max-height: 100px;
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+    line-height: 1.5;
+  }
+  textarea:focus { border-color: var(--sage); }
+  textarea::placeholder { color: var(--ink-light); }
+  .send {
+    width: 42px; height: 42px;
+    background: var(--accent);
+    border: none; border-radius: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 12px rgba(78,122,98,0.3);
+  }
+  .send:hover { transform: scale(1.06); }
+  .send:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+  .send svg { width: 18px; height: 18px; }
+
+  /* api key gate */
+  #api-gate {
+    display: none;
+    padding: 1.5rem;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin: 1rem;
+    box-shadow: var(--shadow);
+    flex-shrink: 0;
+  }
+  #api-gate p { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.6; margin-bottom: 0.75rem; }
+  #api-gate a { color: var(--accent); }
+  .api-input-row { display: flex; gap: 0.5rem; }
+  #api-key-input {
+    flex: 1; border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.6rem 0.9rem; font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif; outline: none;
+    background: var(--cream); color: var(--ink);
+  }
+  #api-key-input:focus { border-color: var(--sage); }
+  .save-key-btn {
+    background: var(--accent); color: white; border: none;
+    border-radius: 10px; padding: 0.6rem 1.2rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    cursor: pointer; white-space: nowrap; font-weight: 500;
+  }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  @media (max-width: 480px) {
+    .moods { gap: 0.35rem; }
+    .mood { font-size: 0.73rem; padding: 0.28rem 0.7rem; }
+    #landing h1 { font-size: 1.9rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="landing">
+  <div class="logo-mark">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 4C16 4 8 10 8 18C8 22.4 11.6 26 16 26C20.4 26 24 22.4 24 18C24 10 16 4 16 4Z" fill="white" fill-opacity="0.9"/>
+      <path d="M12 20C12 20 14 17 16 17C18 17 20 20 20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <h1>Your life matters<br>more than <em>the chart</em></h1>
+  <p>Breathe-Out helps you stay sane, grounded, and healthy — no matter what the market is doing.</p>
+  <div class="pillars">
+    <span class="pillar">🧠 Emotional check-ins</span>
+    <span class="pillar">🌙 Sleep & rest nudges</span>
+    <span class="pillar">⚡ FOMO awareness</span>
+    <span class="pillar">💧 Daily health habits</span>
+  </div>
+  <button class="start-btn" onclick="startApp()">Open Breathe-Out</button>
+  <p class="landing-note">Not financial advice · Not medical advice · Just a friend who cares</p>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="h-logo">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 4C16 4 8 10 8 18C8 22.4 11.6 26 16 26C20.4 26 24 22.4 24 18C24 10 16 4 16 4Z" fill="white" fill-opacity="0.9"/><path d="M12 20C12 20 14 17 16 17C18 17 20 20 20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <div class="h-title">Breathe-Out</div>
+      <div class="h-sub">health companion · not financial advice</div>
+    </div>
+    <div class="h-pulse"></div>
+  </header>
+
+  <div class="checkin">
+    <div class="checkin-label">How are you feeling right now?</div>
+    <div class="moods">
+      <button class="mood" data-mood="🔥 pumped and excited">🔥 Pumped</button>
+      <button class="mood" data-mood="😤 stressed out">😤 Stressed</button>
+      <button class="mood" data-mood="😴 exhausted and burnt out">😴 Exhausted</button>
+      <button class="mood" data-mood="😰 anxious about the market">😰 Anxious</button>
+      <button class="mood" data-mood="😔 down after a loss">😔 Down</button>
+      <button class="mood" data-mood="😌 okay, just checking in">😌 Okay</button>
+    </div>
+  </div>
+
+  <div id="api-gate">
+    <p>To power Breathe-Out's AI, add your free Anthropic API key. <a href="https://console.anthropic.com" target="_blank">Get one free here →</a><br>Your key is stored only in this browser.</p>
+    <div class="api-input-row">
+      <input type="password" id="api-key-input" placeholder="sk-ant-..." />
+      <button class="save-key-btn" onclick="saveKey()">Save & Start</button>
+    </div>
+  </div>
+
+  <div class="messages" id="msgs"></div>
+  <div class="qr-area" id="qrs"></div>
+  <div class="input-bar">
+    <textarea id="inp" placeholder="talk to me..." rows="1"></textarea>
+    <button class="send" id="send-btn" onclick="sendMsg()" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+const SYSTEM = `You are Breathe-Out — a warm, calm, emotionally intelligent companion for crypto users. You are built to help people stay healthy, grounded, and sane in the chaotic world of crypto.
+
+IDENTITY:
+- You are NOT a therapist, doctor, or financial advisor. You never act as one.
+- You speak like a wise friend who has been deep in crypto AND has done real work on their mental + physical health.
+- Your tone is: calm, supportive, internet-native, real. Think: supportive friend energy, not clinical chatbot.
+- Keep responses short and human. 2-4 sentences usually. Never use bullet lists. Speak in flowing, natural language.
+- Use a light emoji occasionally but don't spam them.
+- Never say generic phrases like "I understand how you feel" — show empathy through your actual words and actions.
+
+EMOTIONAL DETECTION & RESPONSE:
+- Stressed → validate first ("that sounds genuinely exhausting"), then offer ONE small grounding action
+- Excited/FOMO → match energy briefly, then gently ask when they last slept/ate, without killing the vibe
+- Burnt out → be very gentle and slow, prioritize rest before any advice
+- Down after a loss → full empathy first, NO immediate silver linings, let them process it
+- Anxious → use calm, grounding language; offer breathing if appropriate; no information overload
+- When mood is shared → acknowledge it naturally, ask what's behind it
+
+CRYPTO BEHAVIOR AWARENESS (detect these patterns and name them gently, once):
+- Overtrading: "been at the charts all night", "entered another trade", "can't stop checking"
+- FOMO: "everyone is making money", "about to ape in", "going to miss this"
+- Burnout: "been doing this for weeks", "can't think straight", "so tired"
+- Dopamine loops: checking prices every few minutes, inability to step away
+- When you detect one: name it softly ("sounds like FOMO might be whispering to you"), then move forward
+
+HEALTH NUDGES (weave in naturally, never lecture, never more than one per response):
+- Sleep: if they're tired or it's clearly late, gently nudge toward rest
+- Water: "when did you last drink some water?" if they seem stressed or have been at screens
+- Breaks: suggest stepping away from the screen for 5 minutes if they've been trading for hours
+- Food: ask when they last had a real meal if they sound anxious or scattered
+- Breathing: offer "try 4 counts in, hold 4, out 4" for acute stress moments
+
+SAFETY (absolutely non-negotiable):
+- Never diagnose. Never say "you have anxiety / depression / ADHD"
+- Never recommend supplements, medications, or dosages
+- Never validate or invalidate a financial decision emotionally ("you seem calm enough to trade now" is NOT okay)
+- If someone mentions self-harm or suicidal thoughts: respond with care and warmth, say clearly you care about them, and gently encourage them to reach out to a crisis line or a trusted person in their life
+- Never predict market outcomes or validate risky trades
+
+CRYPTO FLUENCY: You know what CT, aping in, degen, rekt, FOMO, paper hands, diamond hands, GM, wagmi, ngmi, bag, pump, dump, bear market, bull run mean. You use them naturally when it fits, but you're always health-first.
+
+You are the friend who texts back at 3am when the market crashes — not to talk about price, but to check if they ate dinner.`;
+
+let msgs = [];
+let busy = false;
+let initialized = false;
+let apiKey = localStorage.getItem('bo_key') || '';
+
+function startApp() {
+  document.getElementById('landing').style.display = 'none';
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  if (!apiKey) {
+    document.getElementById('api-gate').style.display = 'block';
+  } else {
+    initChat();
+  }
+}
+
+function saveKey() {
+  const k = document.getElementById('api-key-input').value.trim();
+  if (!k.startsWith('sk-')) { alert('Please enter a valid Anthropic API key (starts with sk-ant-)'); return; }
+  apiKey = k;
+  localStorage.setItem('bo_key', k);
+  document.getElementById('api-gate').style.display = 'none';
+  initChat();
+}
+
+async function initChat() {
+  if (initialized) return;
+  initialized = true;
+  await send('hey, I just opened Breathe-Out for the first time', true);
+  setQRs(['I\'m stressed about the market', 'I\'ve been overtrading', 'I\'m burnt out honestly', 'Just checking in 😌']);
+}
+
+function t() { return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+
+function addMsg(role, text, insight) {
+  const wrap = document.getElementById('msgs');
+  const d = document.createElement('div');
+  d.className = `msg ${role}`;
+  const av = role === 'bot'
+    ? `<div class="msg-av" style="background:var(--sage)"><svg viewBox="0 0 32 32" fill="none"><path d="M16 4C16 4 8 10 8 18C8 22.4 11.6 26 16 26C20.4 26 24 22.4 24 18C24 10 16 4 16 4Z" fill="white" fill-opacity="0.9"/></svg></div>`
+    : `<div class="msg-av">you</div>`;
+  d.innerHTML = `${av}<div><div class="bubble">${text.replace(/\n/g,'<br>')}</div></div>`;
+  wrap.appendChild(d);
+  if (insight) {
+    const ins = document.createElement('div');
+    ins.className = 'insight';
+    ins.textContent = insight;
+    wrap.appendChild(ins);
+  }
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function showTyping() {
+  const wrap = document.getElementById('msgs');
+  const d = document.createElement('div');
+  d.id = 'typing';
+  d.className = 'typing-wrap';
+  d.innerHTML = `<div class="msg-av" style="background:var(--sage);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 32 32" fill="none" width="14" height="14"><path d="M16 4C16 4 8 10 8 18C8 22.4 11.6 26 16 26C20.4 26 24 22.4 24 18C24 10 16 4 16 4Z" fill="white" fill-opacity="0.9"/></svg></div><div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  wrap.appendChild(d);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function removeTyping() { const el = document.getElementById('typing'); if (el) el.remove(); }
+
+function setQRs(replies) {
+  const area = document.getElementById('qrs');
+  area.innerHTML = '';
+  replies.forEach(r => {
+    const b = document.createElement('button');
+    b.className = 'qr';
+    b.textContent = r;
+    b.onclick = () => { area.innerHTML = ''; sendMsg(r); };
+    area.appendChild(b);
+  });
+}
+
+function detectInsight(text) {
+  const t = text.toLowerCase();
+  if (/(all night|can't sleep|no sleep|3am|4am|haven't slept)/.test(t)) return '💤 Sleep deprivation affects decision-making more than most people realise. Rest is a trading edge too.';
+  if (/(fomo|everyone is|missing out|gonna miss|about to ape)/.test(t)) return '⚡ FOMO is one of the most costly emotions in crypto. Notice it — don\'t react to it.';
+  if (/(been trading all|checked.*price.*times|can\'t stop checking|keeps refreshing)/.test(t)) return '📊 Overtrading is a sign the market is living rent-free in your head. A break usually helps more than another trade.';
+  return null;
+}
+
+async function send(text, hidden = false) {
+  if (busy) return;
+  busy = true;
+  document.getElementById('send-btn').disabled = true;
+  document.querySelectorAll('.mood').forEach(b => b.disabled = true);
+
+  if (!hidden) addMsg('user', text);
+  msgs.push({ role: 'user', content: text });
+
+  showTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM, messages: msgs.slice(-14) })
+    });
+    const data = await res.json();
+    const reply = data.content?.map(b => b.text || '').join('') || "I'm here. Tell me what's going on?";
+    msgs.push({ role: 'assistant', content: reply });
+    removeTyping();
+    const insight = !hidden ? detectInsight(text) : null;
+    addMsg('bot', reply, insight);
+
+    // context-aware quick replies
+    const lower = text.toLowerCase();
+    let qrs = ['I haven\'t eaten yet today', 'I want to talk more', 'Check in on me tomorrow'];
+    if (/(stress|anxious|panic|overwhelm)/.test(lower)) qrs = ['Can we try breathing?', 'I haven\'t slept', 'I\'ve been at the charts for hours'];
+    else if (/(loss|rekt|down|lost|bad trade)/.test(lower)) qrs = ['I really need to talk', 'I don\'t know what to do', 'I think I need a break'];
+    else if (/(pump|fomo|ape|bull|moon)/.test(lower)) qrs = ['I might be overtrading', 'I haven\'t slept well', 'I feel good actually'];
+    else if (/(tired|exhaust|burnt|burnout|weeks)/.test(lower)) qrs = ['How do I actually take a break?', 'I can\'t stop though', 'I\'ve been doing this for months'];
+    setQRs(qrs);
+
+  } catch(e) {
+    removeTyping();
+    addMsg('bot', e.message?.includes('401') ? 'Hmm, that API key doesn\'t seem right. Can you double-check it in settings?' : 'Something glitched on my end — but I\'m still here. What\'s on your mind?');
+  }
+
+  busy = false;
+  document.getElementById('send-btn').disabled = false;
+  document.querySelectorAll('.mood').forEach(b => b.disabled = false);
+}
+
+async function sendMsg(preset) {
+  const inp = document.getElementById('inp');
+  const text = preset || inp.value.trim();
+  if (!text || busy) return;
+  inp.value = '';
+  inp.style.height = 'auto';
+  document.getElementById('qrs').innerHTML = '';
+  await send(text);
+}
+
+// mood buttons
+document.querySelectorAll('.mood').forEach(b => {
+  b.addEventListener('click', () => {
+    if (busy) return;
+    document.querySelectorAll('.mood').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('qrs').innerHTML = '';
+    send(`my mood right now: ${b.dataset.mood}`);
+  });
+});
+
+// textarea auto-grow + enter key
+const inp = document.getElementById('inp');
+inp.addEventListener('input', () => { inp.style.height = 'auto'; inp.style.height = Math.min(inp.scrollHeight, 100) + 'px'; });
+inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
+</script>
+</body>
+</html>
