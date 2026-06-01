@@ -442,25 +442,12 @@ You are the friend who texts back at 3am when the market crashes — not to talk
 let msgs = [];
 let busy = false;
 let initialized = false;
-let apiKey = localStorage.getItem('bo_key') || '';
+let apiKey = 'REPLACE_WITH_KEY';
 
 function startApp() {
   document.getElementById('landing').style.display = 'none';
   const app = document.getElementById('app');
   app.style.display = 'flex';
-  if (!apiKey) {
-    document.getElementById('api-gate').style.display = 'block';
-  } else {
-    initChat();
-  }
-}
-
-function saveKey() {
-  const k = document.getElementById('api-key-input').value.trim();
-  if (!k.startsWith('sk-')) { alert('Please enter a valid Anthropic API key (starts with sk-ant-)'); return; }
-  apiKey = k;
-  localStorage.setItem('bo_key', k);
-  document.getElementById('api-gate').style.display = 'none';
   initChat();
 }
 
@@ -535,9 +522,9 @@ async function send(text, hidden = false) {
   showTyping();
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/.netlify/functions/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM, messages: msgs.slice(-14) })
     });
     const data = await res.json();
